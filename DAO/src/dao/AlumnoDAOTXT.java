@@ -4,6 +4,8 @@ package dao;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import persona.Alumno;
@@ -101,8 +103,10 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
         
         Double promedio = Double.valueOf(campos[i++].trim().replaceAll(",", "."));
         
+        boolean activo = campos[i].equals("A");
+        
         return new Alumno (dniAlu, nombre, apellido, sexo, fechaNac,
-                fechaIngreso, cantMatAprob, promedio);
+                fechaIngreso, cantMatAprob, promedio, activo);
     }
 
     
@@ -115,7 +119,26 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     
     @Override
     public void update(Alumno entidad)throws DAOException {
-        
+        // raf.getFilePointer - devuelve el punto con su valor actual
+        //raf.seek (puntero)
+        // cuando actualizo - sobreescribir toda la líneaL
+        try {
+            raf.seek(0); // se posiciona al inicio
+            String linea; // hasta el line separator
+            String [] campos; // asignacion del vector
+            while((linea = raf.readLine())!=null){ // si la linea es distinta de null -  sigue leyendo
+                campos = linea.split(persona.Persona.DELIM);
+                if (Long.valueOf(campos[0].trim()).equals(entidad.getDni())){
+                    //guardar el alumno en esa posición 
+                    Long posicion = raf.getFilePointer() - linea.length() - System.lineSeparator().length();
+                    raf.seek(posicion);
+                    raf.writeBytes(entidad.toString()+System.lineSeparator());
+                    break;
+                }
+            }
+        } catch (IOException | NumberFormatException ex) {
+            Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
@@ -126,7 +149,12 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
      */
     @Override
     public void delete(Long dni) throws DAOException {
-        
+        Alumno alu = read (dni);
+        if (alu==null){
+            throw new DAOException ("El alumno a eliminar no existe");
+        }
+        alu.setActivo(false);
+        update(alu);
     }
 
     @Override
@@ -148,7 +176,35 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
             
             return false;
         }
-  
+
+    
+    /*
+    * @param Activos = TRUE / Bajas = FALSE / null = otherwise / A+B = all
+     * @return
+     * @throws DAOException 
+     */
+    @Override
+    public List<Alumno> findAll(Boolean activos) throws DAOException {
+        List<Alumno> alumnos = new ArrayList<>();
+        
+        try {
+            raf.seek(0); // Se posiciona al inicio
+            String linea;
+            String[] campos; 
+            while((linea = raf.readLine())!=null) {
+                campos = linea.split(persona.Persona.DELIM);
+                Alumno alu = str2Alu(campos);
+                if (activos==null || activos == alu.isActivo()) {
+                    alumnos.add(alu);
+                }
+            }
+        } catch (IOException | NumberFormatException | PersonaException | MiCalendarioException ex) {
+            Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Error al leer los alumnos ==> "+ex.getMessage());
+        }
+        
+        return alumnos;
+    }
     
     
   

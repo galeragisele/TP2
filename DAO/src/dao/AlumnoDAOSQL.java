@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.util.List;
+
 /**
  *
  * @author gisele.galera
@@ -33,6 +35,11 @@ public class AlumnoDAOSQL extends DAO {
 
     @Override
     public boolean existe(Object clave) throws DAOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List findAll(Boolean activos) throws DAOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
