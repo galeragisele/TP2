@@ -7,7 +7,7 @@ package persona;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class MiCalendarioException extends Exception {
 

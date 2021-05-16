@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class Persona {
 // definir atributos de una persona - si sacamos el private, los atributos pasan a ser privados en paquete, o sea, dentro del proyecto son publico y fuera privados
@@ -53,12 +53,12 @@ public class Persona {
     }
   
        
-/**
- * los atributos son privados pero los getters (consultar) / setters (modificar- escribir) son publicos para que puedan ser accedidos desde afuera
- * si los campos no tienen el modo de acceso private, al crear los getters/setters se puede elegir encapsulate field - eso hace que los atributos pasen a ser privados
+    /**
+     * GETTER Y SETTERS
+     * los atributos son privados pero los getters (consultar) / setters (modificar- escribir) son publicos para que puedan ser accedidos desde afuera
+     * si los campos no tienen el modo de acceso private, al crear los getters/setters se puede elegir encapsulate field - eso hace que los atributos pasen a ser privados
      * @return   
- */
-    
+     */
     public long getDni() {
         return dni;
     }
@@ -93,7 +93,7 @@ public class Persona {
         this.apellido = apellido;
     }
 
-    public Calendar getFechaNac() {
+    public MiCalendario getFechaNac() {
         return fechaNac;
     }
 
@@ -107,7 +107,7 @@ public class Persona {
 
     public void setSexo(char sexo) throws PersonaException {
         sexo = Character.toUpperCase(sexo);
-        if (sexo!= 'F'&& sexo!='M'){
+        if (sexo!='F' && sexo!='M'){
             throw new PersonaException("El sexo debe ser F o M");
             
         }

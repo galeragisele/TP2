@@ -3,7 +3,7 @@ package dao;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class DAOException extends Exception {
 

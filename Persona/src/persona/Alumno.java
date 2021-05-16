@@ -3,7 +3,7 @@ package persona;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class Alumno extends Persona{
     private MiCalendario fechaIngreso;
@@ -53,6 +53,7 @@ public class Alumno extends Persona{
         setActivo (activo);
     }
     
+
     
     
     public MiCalendario getFechaIntreso (){

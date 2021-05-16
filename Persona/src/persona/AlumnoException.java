@@ -2,7 +2,7 @@ package persona;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class AlumnoException extends PersonaException {
 

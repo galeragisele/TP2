@@ -17,7 +17,7 @@ import persona.PersonaException;
 
  *
 
- * @author gisele.galera
+ * @author Grupo 13
 
  */
 
@@ -33,8 +33,6 @@ public class TestePersona {
      */
 
     public static void main(String[] args) throws PersonaException {
-
-        Persona persona = new Persona();
 
         try {
 /**

@@ -1,15 +1,21 @@
 package persona;
 
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class MiCalendario extends GregorianCalendar{
 
     public MiCalendario() {
+    }
+    
+    public MiCalendario(Date date) {
+        setTimeInMillis(date.getTime());
     }
 
     public MiCalendario(int dia, int mes, int anio) throws MiCalendarioException {
@@ -17,33 +23,37 @@ public class MiCalendario extends GregorianCalendar{
         setLenient(false); // no permitir que seteen un valor erroneo
         
         try {
-        
             get(Calendar.YEAR);
-        
         }
         catch (Exception ex) {
             throw new MiCalendarioException ("Error en la fecha");
         }
     }
-        
-        public int getAnio(){
-            
-            return get(Calendar.YEAR);
-        }
     
-        public int getMes(){
-            
-            return get(Calendar.MONTH)+1;
-        }
-    
-        public int getDia(){
-            
-            return get(Calendar.DAY_OF_MONTH);
-        }
 
     /**
-     *
-     * @return
+     * Getters
+     * @return int  
+     */
+    public int getAnio(){
+        return get(Calendar.YEAR);
+    }
+
+    public int getMes(){
+        return get(Calendar.MONTH)+1;
+    }
+
+    public int getDia(){
+        return get(Calendar.DAY_OF_MONTH);
+    }
+
+    public Date toSQLDate() {
+        return new Date(this.getTimeInMillis());
+    }
+
+    /**
+     * ToString
+     * @return String DD/MM/YYYY 
      */
     @Override
     public String toString() {

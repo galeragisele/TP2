@@ -15,7 +15,7 @@ import persona.PersonaException;
 
 /**
  *
- * @author gisele.galera
+ * @author Grupo 13
  */
 public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     
@@ -48,7 +48,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
             raf.writeBytes(alumno.toString()+System.lineSeparator()); // lineseparator es para el salto de línea 
         } catch (IOException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
-            throw new DAOException("Error al crear el Alumno ==> "+ex.getMessage());
+            throw new DAOException("Error al crear el Alumno ==> " + ex.getMessage());
         }
        
     }
@@ -179,7 +179,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
 
     
     /*
-    * @param Activos = TRUE / Bajas = FALSE / null = otherwise / A+B = all
+     * @param Activos = TRUE / Bajas = FALSE / null = otherwise / A+B = all
      * @return
      * @throws DAOException 
      */
@@ -204,6 +204,21 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
         }
         
         return alumnos;
+    }
+    
+    /**
+     * Cierra la conexion
+     * @throws DAOException 
+     */
+    @Override
+    public void close() throws DAOException {
+
+        try {
+            raf.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Error al cerrar el archivo ==> "+ex.getMessage());
+        }
     }
     
     
