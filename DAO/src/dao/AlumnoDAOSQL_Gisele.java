@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -17,7 +18,7 @@ import persona.PersonaException;
  *
  * @author Grupo 13
  */
-public class AlumnoDAOSQL extends DAO<Alumno, Long>{
+public class AlumnoDAOSQL_Gisele extends DAO<Alumno, Long>{
 
     private Connection conn;
     private PreparedStatement insertPS;
@@ -26,11 +27,10 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
     private PreparedStatement deletePS;
     private PreparedStatement selectAllPS;
     
-    AlumnoDAOSQL (String url, String usuario, String password) throws DAOException {
+    AlumnoDAOSQL_Gisele(String url, String usuario, String password) throws DAOException {
         
         try {
-            conn = DriverManager.getConnection(url, usuario, password);
-            
+            conn = DriverManager.getConnection("127.0.0.1", "root", "");
         } catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al conectarse con la BD ==> "+ex.getMessage());
@@ -42,10 +42,9 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 "sexo,\n" +
                 "fechaNac,\n" +
                 "fechaIngreso,\n" +
-                "cantMatAprob,\n" +
                 "promedio)\n" +
                 "VALUES\n" +
-                "(?,?,?,?,?,?,?,?);";
+                "(?,?,?,?,?,?);";
         
         try {
             insertPS = conn.prepareStatement(insertSQL);
@@ -63,16 +62,15 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             throw new DAOException("Error al crear sentencia para SELECT ==> "+ex.getMessage());
         }
         
-        String updateSQL= "update alumnos\n SET " +
-                "dni = ?,\n" +
-                "nombre = ?,\n" +
-                "apellido = ?,\n" +
-                "sexo = ?,\n" +
-                "fechaNac = ?,\n" +
-                "fechaIngreso = ?,\n" +
-                "cantMatAprob = ?,\n" +
-                "promedio = ?\n" +
-                " WHERE dni = ?";
+        String updateSQL= "update alumnos\n SET" +
+                 "(dni,\n" +
+                "nombre,\n" +
+                "apellido,\n" +
+                "sexo,\n" +
+                "fechaNac,\n" +
+                "fechaIngreso,\n" +
+                "promedio)\n" +
+                "(?,?,?,?,?,?);";
         
         try {
             updatePS = conn.prepareStatement(updateSQL);
@@ -106,10 +104,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             insertPS.setLong(index++, alu.getDni());
             insertPS.setString(index++, alu.getNombre());
             insertPS.setString(index++, alu.getApellido());
-            insertPS.setString(index++, String.valueOf(alu.getSexo()));
             insertPS.setDate(index++, alu.getFechaNac().toSQLDate());
-            insertPS.setDate(index++, alu.getFechaIngreso().toSQLDate());
-            insertPS.setDouble(index++, alu.getCantMatAprob());
+            insertPS.setString(index++, String.valueOf(alu.getSexo()));
             insertPS.setDouble(index++, alu.getPromedio());
             
             insertPS.execute();
@@ -134,7 +130,6 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 alu.setSexo(rs.getString("sexo").charAt(0));
                 alu.setFechaNac(new MiCalendario(rs.getDate("fechaNac")));
                 alu.setFechaIngreso(new MiCalendario(rs.getDate("fechaIngreso")));
-                alu.setCantMatAprob(rs.getInt("cantMatAprob"));
                 alu.setPromedio(rs.getDouble("promedio"));
             }
             
@@ -151,12 +146,10 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             updatePS.setLong(index++, alu.getDni());
             updatePS.setString(index++, alu.getNombre());
             updatePS.setString(index++, alu.getApellido());
-            updatePS.setString(index++, String.valueOf(alu.getSexo()));
             updatePS.setDate(index++, alu.getFechaNac().toSQLDate());
-            updatePS.setDate(index++, alu.getFechaIngreso().toSQLDate());
-            updatePS.setInt(index++, alu.getCantMatAprob());
+            updatePS.setString(index++, String.valueOf(alu.getSexo()));
             updatePS.setDouble(index++, alu.getPromedio());
-            updatePS.setLong(index++, alu.getDni());
+            
             updatePS.execute();
             
         } catch (SQLException ex) {
@@ -197,7 +190,6 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 alu.setSexo(rs.getString("sexo").charAt(0));
                 alu.setFechaNac(new MiCalendario(rs.getDate("fechaNac")));
                 alu.setFechaIngreso(new MiCalendario(rs.getDate("fechaIngreso")));
-                alu.setCantMatAprob(rs.getInt("cantMatAprob"));
                 alu.setPromedio(rs.getDouble("promedio"));
                 alumnos.add(alu);
             }

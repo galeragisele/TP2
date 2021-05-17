@@ -56,7 +56,7 @@ public class Alumno extends Persona{
 
     
     
-    public MiCalendario getFechaIntreso (){
+    public MiCalendario getFechaIngreso (){
         return fechaIngreso;
     }
 
