@@ -30,12 +30,12 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         
         try {
             conn = DriverManager.getConnection(url, usuario, password);
-            
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al conectarse con la BD ==> "+ex.getMessage());
         }
-        String insertSQL = "insert into alumnos\n" +
+        String insertSQL = "INSERT INTO alumnos\n" +
                 "(dni,\n" +
                 "nombre,\n" +
                 "apellido,\n" +
@@ -49,21 +49,23 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         
         try {
             insertPS = conn.prepareStatement(insertSQL);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear sentencia para INSERT ==> "+ex.getMessage());
         }
          
-        String selectSQL = "select * from  alumnos where dni = ?";
+        String selectSQL = "SELECT * FROM  alumnos WHERE dni = ?";
         
         try {
             selectPS = conn.prepareStatement(selectSQL);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear sentencia para SELECT ==> "+ex.getMessage());
         }
         
-        String updateSQL= "update alumnos\n SET " +
+        String updateSQL= "UPDATE alumnos\n SET " +
                 "dni = ?,\n" +
                 "nombre = ?,\n" +
                 "apellido = ?,\n" +
@@ -76,21 +78,23 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         
         try {
             updatePS = conn.prepareStatement(updateSQL);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear sentencia para UPDATE ==> "+ex.getMessage());
         }
          
-          String deleteSQL= "delete from alumnos\n where DNI=?" ;
+          String deleteSQL= "DELETE FROM alumnos\n where DNI=?" ;
         
         try {
             deletePS = conn.prepareStatement(deleteSQL);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear sentencia para delete ==> "+ex.getMessage());
         } 
         
-        String selectAllSQL = "select * from alumnos";
+        String selectAllSQL = "SELECT * FROM alumnos";
         
         try {
             selectAllPS = conn.prepareStatement(selectAllSQL);
@@ -185,7 +189,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
     @Override
     public List<Alumno> findAll(Boolean activos) throws DAOException {
         List<Alumno> alumnos = new ArrayList<>();
-        Alumno alu = null;
+        Alumno alu;
         try {
           
             ResultSet rs = selectAllPS.executeQuery();

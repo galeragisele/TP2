@@ -27,32 +27,42 @@ public class TesteDAO {
 
     /**
      * Este metodo sirve para hacer testing de las funciones de ABM
-     * Llama a un
-     * Tanto para TXT, como para SQL
+     * Llama a un factory que instancia un dao<T, K>
+     * 
+     * Sirve tanto para TXT, como para SQL
      * 
      * @param args the command line arguments
-     * @throws persona.PersonaException
-     * @throws persona.MiCalendarioException
+     * @throws PersonaException
+     * @throws MiCalendarioException
      */    
     public static void main(String[] args) throws PersonaException, MiCalendarioException, DAOException {        
         DAO<Alumno, Long> dao = null;
+        //AlumnoDAOTXT dao = new AlumnoDAOTXT("alumnos2.txt");
         Alumno alumno;
         try {
             Map<String, String> config = new HashMap<>();
+            
+            //DAO SQL
             config.put(DAOFactory.TIPO_DAO, "SQL");                              
             config.put(DAOFactory.URL_DB, "jdbc:mysql://localhost:3306/unlam");
-            config.put(DAOFactory.USUARIO_DB, "root");
+            config.put(DAOFactory.USUARIO_DB, "user");
             config.put(DAOFactory.PASS_DB, "");
-                    
             dao = DAOFactory.getIntance().createDAO(config);
             
-            MiCalendario fechaNac = new MiCalendario(1, 10, 1984);
-            MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
-            alumno = new Alumno(24467027, "Ezequiel", "Saint", 'm', fechaNac, fechaIng, 1, 4.0);
-
-            // create MYSQL: dao.create(alumno);
             
-            // delete MYSQL: dao.delete(Long.valueOf(94489249));
+            
+            //CREATE
+            MiCalendario fechaNac = new MiCalendario(1, 10, 1991);
+            MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
+            alumno = new Alumno(35766182, "Luciano", "Salgado", 'm', fechaNac, fechaIng, 1, 8.9);
+            dao.create(alumno);
+            System.out.println("Alumno creado ==>" + alumno);
+            
+            // delete MYSQL: 
+            /*alumno = new Alumno();
+            alumno.setDni(35766183);
+            dao.delete(alumno.getDni());
+            System.out.println("El alumno con DNI " + alumno.getDni() + " fue eliminado .");*/
             
             /*update MYSQL: Alumno alu1 = dao.read(Long.valueOf(35766182));
             alu1.setApellido("Gomez");
@@ -78,50 +88,66 @@ public class TesteDAO {
             
             
             
-            
-            //AlumnoDAOTXT dao = new AlumnoDAOTXT("alumnos2.txt");
-            
+            //DAO TXT
+            /*
+            config.put(DAOFactory.TIPO_DAO, "TXT");                              
+            config.put(DAOFactory.FILENAME, "alumno.txt");
+            dao = DAOFactory.getIntance().createDAO(config);
+            */
             //CREATE
             /*
             MiCalendario fechaNac = new MiCalendario(2, 11, 1981);
             MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
-            Alumno alu2 = new Alumno(90909088, "Gisele", "Galera", 'f', fechaNac, fechaIng, 10, 8.0);
-            dao.create(alu2);
-            System.out.println("Alumno ==>"+ alu2);
+            alumno = new Alumno(90909088, "Gisele", "Galera", 'f', fechaNac, fechaIng, 10, 8.0);
+            dao.create(alumno);
+            System.out.println("Alumno creado ==>" + alumno);
             */
             
             //READ
             /*
-            Alumno alu3 = new Alumno();
-            alu3.setDni(90909088);
-            if (dao.read(alu3.getDni())!=null)
-                System.out.println("Alumno Encontrado");
+            alumno = new Alumno();
+            alumno.setDni(90909018);
+            if (dao.read(alumno.getDni())!=null)
+                System.out.println("Alumno encontrado");
+            else
+                System.out.println("Alumno no encontrado");
             */
+            
+            //READ && UPDATE
+            /*
+            alumno = dao.read(Long.valueOf(909090828));
+            System.out.println("Alumno original   ==> " + alumno);
+            alumno.setApellido("Souza");
+            dao.update(alumno);
+            System.out.println("Alumno modificado ==> " + alumno);
+            */
+            
             //UPDATE
             /*
-            Alumno alu4 = dao.read(Long.valueOf(90909081));
-            alu4.setApellido("Souza");
-            dao.update(alu4);
+            MiCalendario fechaNac = new MiCalendario(2, 11, 1981);
+            MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
+            alumno = new Alumno(90909088, "Gisele", "Galera", 'f', fechaNac, fechaIng, 10, 8.0);
+            dao.update(alumno);
+            System.out.println("Alumno modificado ==> " + alumno);
             */
             
             //DELETE
             /*
-            Alumno aluDeleteTXT = new Alumno();
-            alu3.setDni(90909088);
-            dao.delete(alu.getDni());
+            alumno = new Alumno();
+            alumno.setDni(90909088);
+            dao.delete(alumno.getDni());
+            System.out.println("El alumno con DNI " + alumno.getDni() + " fue eliminado .");
             */
             
-            
-            //daoTXT.delete(Long.valueOf(90909082));
-            
+                        
             //LIST
             /*
-            List<Alumno> alumnos = dao.findAll(false);
+            List<Alumno> alumnos = dao.findAll(null); //true=activos  false=borrados  null=todos
             //for (Alumno alumno : alumnos){
-            alumnos.forEach((alumno) -> {
-                System.out.println("Alumno ==> "+ alumno);
-            });*/
-            
+            alumnos.forEach((alu) -> {
+                System.out.println("Alumno ==> "+ alu);
+            });
+            */
         } catch (/*AlumnoException | DAO*/Exception ex) {
             Logger.getLogger(TesteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

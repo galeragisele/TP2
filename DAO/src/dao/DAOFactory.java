@@ -15,9 +15,11 @@ import java.util.logging.Logger;
  */
 public class DAOFactory {
     public static final String TIPO_DAO = "TIPO_DAO";
-    public static final String TIPO_DAO_TXT = "TXT";
-    public static final String TIPO_DAO_SQL = "SQL";
     
+    public static final String TIPO_DAO_TXT = "TXT";
+    public static final String FILENAME = "FILENAME";
+    
+    public static final String TIPO_DAO_SQL = "SQL";
     public static final String URL_DB = "URL_DB";
     public static final String USUARIO_DB = "USUARIO_DB";
     public static final String PASS_DB = "PASS_DB";
@@ -39,13 +41,12 @@ public class DAOFactory {
             String tipoDAO = config.get(TIPO_DAO);
             switch (tipoDAO) {
                 case TIPO_DAO_TXT:
-                    String filename = config.get("FILE_NAME");
+                    String filename = config.get(FILENAME);
                     return new AlumnoDAOTXT(filename);
                 case TIPO_DAO_SQL:
                     String url = config.get(URL_DB);
                     String usuario = config.get(USUARIO_DB);
                     String pass = config.get(PASS_DB);
-                    
                     return new AlumnoDAOSQL(url, usuario, pass);
                 default:
                     throw new DAOFactoryException("Tipo de DAO NO implementado");

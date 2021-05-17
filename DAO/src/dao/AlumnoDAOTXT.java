@@ -14,7 +14,7 @@ import persona.MiCalendarioException;
 import persona.PersonaException;
 
 /**
- *
+ * DAO TXT para alumno
  * @author Grupo 13
  */
 public class AlumnoDAOTXT extends DAO<Alumno, Long>{
@@ -33,7 +33,8 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     }
 
     /**
-     *
+     * Crear un alumno
+     * Si el dni ya existe, no lo crea.
      * @param alumno
      * @throws dao.DAOException
      */
@@ -55,25 +56,27 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
 
     
     /**
-     *
+     * 
      * @param dni (clave)
-     * @return 
+     * @return Alumno
      * @throws dao.DAOException 
      */
     @Override
     public Alumno read(Long dni)throws DAOException { // se recibe un DNI y se devuelve un alumno
         try {
+            if (!existe(dni)) {
+                throw new DAOException ("El Alumno no existe");
+            }
             raf.seek(0); // se posiciona al inicio
             String linea; // hasta el line separator
             String [] campos; // asignacion del vector
             while((linea = raf.readLine())!=null){ // si la linea es distinto de null se sigue leyendo
                 campos = linea.split(persona.Persona.DELIM);
                 if (Long.valueOf(campos[0].trim()).equals(dni)){
-                    
                     return str2Alu(campos);
                 }
             }
-       }   catch (IOException | MiCalendarioException | NumberFormatException | PersonaException ex) {
+        }   catch (IOException | MiCalendarioException | NumberFormatException | PersonaException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
         }
    
@@ -122,6 +125,8 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
         // raf.getFilePointer - devuelve el punto con su valor actual
         //raf.seek (puntero)
         // cuando actualizo - sobreescribir toda la líneaL
+        if (!existe(entidad.getDni()))
+            throw new DAOException ("El alumno a actualizar no existe");
         try {
             raf.seek(0); // se posiciona al inicio
             String linea; // hasta el line separator
