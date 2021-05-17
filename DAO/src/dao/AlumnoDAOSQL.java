@@ -98,7 +98,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         
         try {
             selectAllPS = conn.prepareStatement(selectAllSQL);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear sentencia para SELECT ==> "+ex.getMessage());
         }        
@@ -117,8 +118,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             insertPS.setDouble(index++, alu.getPromedio());
             
             insertPS.execute();
-            
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al insertar en la BD ==>"+ex.getMessage());
         }
@@ -142,10 +143,13 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 alu.setPromedio(rs.getDouble("promedio"));
             }
             
-        } catch (SQLException | PersonaException ex) {
+        }
+        catch (SQLException | PersonaException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             // TODO throw new DAOException...
-        }        
+        }
+        if (alu==null)
+            throw new DAOException ("El Alumno no existe");
         return alu;
     }
     @Override
@@ -163,7 +167,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             updatePS.setLong(index++, alu.getDni());
             updatePS.execute();
             
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al actualizar en la BD ==>"+ex.getMessage());
         }
@@ -171,11 +176,15 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
 
     @Override
     public void delete(Long dni) throws DAOException{
-    try {
+        try {
+            if (!existe(dni))
+                throw new DAOException ("El Alumno no existe");
+
             int index = 1;
             deletePS.setLong(index++, dni); 
-            boolean execute = deletePS.execute();
-        } catch (SQLException ex) {
+            deletePS.execute();
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al eliminar en la BD ==>"+ex.getMessage());
         }
@@ -183,7 +192,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
 
     @Override
     public boolean existe(Long dni) throws DAOException {
-                    return read(dni)!=null;
+        return read(dni)!=null;
     }
 
     @Override
@@ -218,7 +227,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
 
         try {
             conn.close();
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(AlumnoDAOSQL.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al cerrar la BD ==> "+ex.getMessage());
         }

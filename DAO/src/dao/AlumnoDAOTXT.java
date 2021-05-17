@@ -63,10 +63,11 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
      */
     @Override
     public Alumno read(Long dni)throws DAOException { // se recibe un DNI y se devuelve un alumno
+        if (!existe(dni)) {
+            throw new DAOException ("El Alumno no existe");
+        }
         try {
-            if (!existe(dni)) {
-                throw new DAOException ("El Alumno no existe");
-            }
+
             raf.seek(0); // se posiciona al inicio
             String linea; // hasta el line separator
             String [] campos; // asignacion del vector
