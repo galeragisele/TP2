@@ -22,6 +22,8 @@ public class DAOFactory {
     public static final String USUARIO_DB = "USUARIO_DB";
     public static final String PASS_DB = "PASS_DB";
     
+   
+    
     private static DAOFactory instance;
     
     private DAOFactory() {

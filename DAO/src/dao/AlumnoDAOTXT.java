@@ -124,15 +124,14 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
         // cuando actualizo - sobreescribir toda la líneaL
         try {
             raf.seek(0); // se posiciona al inicio
-            String linea; // hasta el line separator
+            String linea; // linea
             String [] campos; // asignacion del vector
             while((linea = raf.readLine())!=null){ // si la linea es distinta de null -  sigue leyendo
-                campos = linea.split(persona.Persona.DELIM);
-                if (Long.valueOf(campos[0].trim()).equals(entidad.getDni())){
-                    //guardar el alumno en esa posición 
-                    Long posicion = raf.getFilePointer() - linea.length() - System.lineSeparator().length();
-                    raf.seek(posicion);
-                    raf.writeBytes(entidad.toString()+System.lineSeparator());
+                campos = linea.split(persona.Persona.DELIM); // separa la línea en campos segun el TOSTRING
+                if (Long.valueOf(campos[0].trim()).equals(entidad.getDni())){    //agarra el primer campo, se saca los espacios y hace el check para ver si es igual al DNI 
+                    Long posicion = raf.getFilePointer() - linea.length() - System.lineSeparator().length();//longposition calcula la posición inicial de la linea y vuelve al inicio de la linea
+                    raf.seek(posicion); // el puntero es ubicado en la posicion inicial 
+                    raf.writeBytes(entidad.toString()+System.lineSeparator()); // sobreescribe la linea
                     break;
                 }
             }
@@ -179,7 +178,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
 
     
     /*
-     * @param Activos = TRUE / Bajas = FALSE / null = otherwise / A+B = all
+     * @param Activos = TRUE / Bajas = FALSE / null = otherwise A+B = all
      * @return
      * @throws DAOException 
      */

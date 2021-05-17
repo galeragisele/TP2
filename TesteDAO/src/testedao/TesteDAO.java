@@ -39,31 +39,40 @@ public class TesteDAO {
         Alumno alumno;
         try {
             Map<String, String> config = new HashMap<>();
-            config.put(DAOFactory.TIPO_DAO, "SQL");                              
+            /*config.put(DAOFactory.TIPO_DAO, "SQL");                              
             config.put(DAOFactory.URL_DB, "jdbc:mysql://localhost:3306/unlam");
             config.put(DAOFactory.USUARIO_DB, "root");
-            config.put(DAOFactory.PASS_DB, "");
+            config.put(DAOFactory.PASS_DB, */
+            
+            config.put(DAOFactory.TIPO_DAO, "TXT");
+            config.put("FILE_NAME","alumnos.txt");
+           
+            
                     
             dao = DAOFactory.getIntance().createDAO(config);
-            
-            MiCalendario fechaNac = new MiCalendario(1, 10, 1984);
-            MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
-            alumno = new Alumno(24467027, "Ezequiel", "Saint", 'm', fechaNac, fechaIng, 1, 4.0);
+            /*
+            MiCalendario fechaNac = new MiCalendario(8, 10, 1991);
+            MiCalendario fechaIng = new MiCalendario(1, 3, 2021);
+            alumno = new Alumno(30345668, "Danilo", "Gomez", 'm', fechaNac, fechaIng, 5, 7.0);*/
 
             // create MYSQL: dao.create(alumno);
             
             // delete MYSQL: dao.delete(Long.valueOf(94489249));
             
-            /*update MYSQL: Alumno alu1 = dao.read(Long.valueOf(35766182));
-            alu1.setApellido("Gomez");
-            dao.update(alu1);*/
+            /*update MYSQL: 
+            Alumno alu1 = dao.read(Long.valueOf(30345668));
+            alu1.setCantMatAprob(8);
+            dao.update(alu1); */
             
-            /*select MYSQL: Alumno alu2 = dao.read(Long.valueOf(94489249));
+            
+            /*select MYSQL:
+            Alumno alu2 = dao.read(Long.valueOf(94489249));
             if (alu2!=null) {
                 System.out.println("Alumno encontrado ==> "+alu2);
-            }*/
+            } */
             
-            /* findall MYSQL: List<Alumno> alumnos = dao.findAll(true);
+            /* findall MYSQL: 
+            List<Alumno> alumnos = dao.findAll(true);
             for (Alumno alumno5 : alumnos){
                 System.out.println("Alumno ==> "+ alumno5);
             };*/
@@ -82,45 +91,45 @@ public class TesteDAO {
             //AlumnoDAOTXT dao = new AlumnoDAOTXT("alumnos2.txt");
             
             //CREATE
-            /*
+            /*  
             MiCalendario fechaNac = new MiCalendario(2, 11, 1981);
             MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
-            Alumno alu2 = new Alumno(90909088, "Gisele", "Galera", 'f', fechaNac, fechaIng, 10, 8.0);
+            Alumno alu2 = new Alumno(90909071, "Gisele", "Galera", 'f', fechaNac, fechaIng, 10, 8.0);
             dao.create(alu2);
-            System.out.println("Alumno ==>"+ alu2);
-            */
+            System.out.println("Alumno ==>"+ alu2); */
+         
             
             //READ
-            /*
+            /* 
             Alumno alu3 = new Alumno();
             alu3.setDni(90909088);
             if (dao.read(alu3.getDni())!=null)
                 System.out.println("Alumno Encontrado");
             */
+            
             //UPDATE
-            /*
-            Alumno alu4 = dao.read(Long.valueOf(90909081));
+            /* 
+            Alumno alu4 = dao.read(Long.valueOf(90909071));
             alu4.setApellido("Souza");
             dao.update(alu4);
             */
             
             //DELETE
-            /*
+            /* 
             Alumno aluDeleteTXT = new Alumno();
-            alu3.setDni(90909088);
-            dao.delete(alu.getDni());
-            */
+            aluDeleteTXT.setDni(90909071);
+            dao.delete(aluDeleteTXT.getDni());
+           */
             
             
             //daoTXT.delete(Long.valueOf(90909082));
             
             //LIST
-            /*
-            List<Alumno> alumnos = dao.findAll(false);
-            //for (Alumno alumno : alumnos){
-            alumnos.forEach((alumno) -> {
-                System.out.println("Alumno ==> "+ alumno);
-            });*/
+            /* 
+            List<Alumno> alumnos = dao.findAll(true);
+            for (Alumno alumno6 : alumnos){
+                System.out.println("Alumno ==> "+ alumno6);
+            }*/
             
         } catch (/*AlumnoException | DAO*/Exception ex) {
             Logger.getLogger(TesteDAO.class.getName()).log(Level.SEVERE, null, ex);
