@@ -220,7 +220,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         
         }
         return alumnos;
-    }
+    } // metodo reutilizar en read + findall // luego filtrado de tipos de estado (otro ps)
 
     @Override
     public void close() throws DAOException {

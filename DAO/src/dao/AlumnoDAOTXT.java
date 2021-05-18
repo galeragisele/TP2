@@ -24,7 +24,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     
     public AlumnoDAOTXT(String filename) throws DAOException {
         try {
-            raf = new RandomAccessFile(filename, "rws");
+            raf = new RandomAccessFile(filename, "rws"); // se pasa los permisos read - write -  
         } catch (FileNotFoundException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear el DAO ==> "+ex.getMessage());
@@ -46,7 +46,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
                 throw new DAOException ("El Alumno ya existe");
             }
             raf.seek(raf.length()); //setea el puntero al final del file
-            raf.writeBytes(alumno.toString()+System.lineSeparator()); // lineseparator es para el salto de línea 
+            raf.writeBytes(alumno.toString()+System.lineSeparator()); // escribe y el lineseparator es para el salto de línea 
         } catch (IOException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Error al crear el Alumno ==> " + ex.getMessage());
@@ -85,9 +85,9 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     }
 
     private Alumno str2Alu(String[] campos) throws NumberFormatException, PersonaException,
-            MiCalendarioException {
+            MiCalendarioException { // esa función transforma un array de string en alumno
         int i=0;
-        long dniAlu = Long.valueOf(campos[i++].trim());
+        long dniAlu = Long.valueOf(campos[i++].trim()); // se empieza a dividir los campos
         String nombre = campos[i++].trim();
         String apellido = campos[i++].trim();
         
@@ -123,29 +123,33 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
     
     @Override
     public void update(Alumno entidad)throws DAOException {
-        // raf.getFilePointer - devuelve el punto con su valor actual
-        //raf.seek (puntero)
-        // cuando actualizo - sobreescribir toda la líneaL
+        /* raf.getFilePointer - devuelve el punto con su valor actual
+        raf.seek (puntero)
+        cuando actualizo - sobreescribir toda la línea*/
         if (!existe(entidad.getDni()))
             throw new DAOException ("El alumno a actualizar no existe");
         try {
             raf.seek(0); // se posiciona al inicio
-            String linea; // hasta el line separator
+            String linea; 
             String [] campos; // asignacion del vector
+            Long posicion= 0L;
             while((linea = raf.readLine())!=null){ // si la linea es distinta de null -  sigue leyendo
                 campos = linea.split(persona.Persona.DELIM);
-                if (Long.valueOf(campos[0].trim()).equals(entidad.getDni())){
-                    //guardar el alumno en esa posición 
-                    Long posicion = raf.getFilePointer() - linea.length() - System.lineSeparator().length();
-                    raf.seek(posicion);
-                    raf.writeBytes(entidad.toString()+System.lineSeparator());
+                if (Long.valueOf(campos[0].trim()).equals(entidad.getDni())){ // se busca el dni y se saca los espacios y lo compara con el dni que se pasó
+                   /* Long posicion = raf.getFilePointer() - linea.length() - System.lineSeparator().length(); /* indica la posición donde está el puntero(filepointer)actualmente, 
+                    pero el puntero - entonces se resta el largo para de la línea para dejar el puntero al principio*/
+                    raf.seek(posicion); // se ubica el puntero en la posición inicial
+                    raf.writeBytes(entidad.toString()); // acá se sobreescribe
                     break;
                 }
+                posicion=raf.getFilePointer();
             }
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(AlumnoDAOTXT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
 
     
     /**
@@ -170,9 +174,9 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
             String linea; // hasta el line separator
             String [] campos; // asignacion del vector
             while((linea = raf.readLine())!=null){ // si la linea es distinto de null se sigue leyendo
-                campos = linea.split(persona.Persona.DELIM);
+                campos = linea.split(persona.Persona.DELIM); // separa la linea en campos
                 if (Long.valueOf(campos[0].trim()).equals(dni)){
-                    return true; // si encuentra se va del método
+                    return true; // si encuentra el dni se va del método
                 }
             }
        }   catch (IOException ex) {
@@ -185,7 +189,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
 
     
     /*
-     * @param Activos = TRUE / Bajas = FALSE / null = otherwise / A+B = all
+     * @param Activos = TRUE / Bajas = FALSE / null = otherwise  A+B = all
      * @return
      * @throws DAOException 
      */
@@ -199,7 +203,7 @@ public class AlumnoDAOTXT extends DAO<Alumno, Long>{
             String[] campos; 
             while((linea = raf.readLine())!=null) {
                 campos = linea.split(persona.Persona.DELIM);
-                Alumno alu = str2Alu(campos);
+                Alumno alu = str2Alu(campos); // arma el alumno según los campos
                 if (activos==null || activos == alu.isActivo()) {
                     alumnos.add(alu);
                 }

@@ -114,7 +114,7 @@ public class Alumno extends Persona{
        
         
         return super.toString () + DELIM + 
-                fechaIngreso + DELIM + 
+               fechaIngreso + DELIM + 
                String.format("%2d", cantMatAprob) + DELIM + 
                String.format("%5.2f", promedio)+ DELIM + 
                (activo?'A':'B');

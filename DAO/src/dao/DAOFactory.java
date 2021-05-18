@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esa clase sirve para intercambiar con flexibilidad y facilidad distintos objetos
+ * crear objetos sin tener que especificar su clase exacta
  */
 package dao;
 
