@@ -11,11 +11,21 @@ import java.util.GregorianCalendar;
  */
 public class MiCalendario extends GregorianCalendar{
 
+
     public MiCalendario() {
     }
     
     public MiCalendario(Date date) {
         setTimeInMillis(date.getTime());
+    }
+    
+    public MiCalendario(Calendar cal) throws MiCalendarioException {
+        if (cal == null){
+            throw new MiCalendarioException ("Fecha requerida");
+            
+        }
+        
+        setTimeInMillis(cal.getTimeInMillis());
     }
 
     public MiCalendario(int dia, int mes, int anio) throws MiCalendarioException {

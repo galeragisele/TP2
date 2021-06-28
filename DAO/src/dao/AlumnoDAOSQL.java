@@ -43,9 +43,10 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 "fechaNac,\n" +
                 "fechaIngreso,\n" +
                 "cantMatAprob,\n" +
-                "promedio)\n" +
+                "promedio\n" +
+                "estado)\n" +
                 "VALUES\n" +
-                "(?,?,?,?,?,?,?,?);";
+                "(?,?,?,?,?,?,?,?,?);";
         
         try {
             insertPS = conn.prepareStatement(insertSQL);
@@ -73,7 +74,8 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 "fechaNac = ?,\n" +
                 "fechaIngreso = ?,\n" +
                 "cantMatAprob = ?,\n" +
-                "promedio = ?\n" +
+                "promedio = ?,\n" +
+                "estado = ?\n" +
                 " WHERE dni = ?";
         
         try {
@@ -94,7 +96,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             throw new DAOException("Error al crear sentencia para delete ==> "+ex.getMessage());
         } 
         
-        String selectAllSQL = "SELECT * FROM alumnos";
+        String selectAllSQL = "SELECT * FROM alumnos WHERE estado IN (?,?)";
         
         try {
             selectAllPS = conn.prepareStatement(selectAllSQL);
@@ -116,6 +118,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             insertPS.setDate(index++, alu.getFechaIngreso().toSQLDate());
             insertPS.setDouble(index++, alu.getCantMatAprob());
             insertPS.setDouble(index++, alu.getPromedio());
+            insertPS.setString(index++, alu.isActivo()?"A":"B");
             
             insertPS.execute();
         }
@@ -141,6 +144,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 alu.setFechaIngreso(new MiCalendario(rs.getDate("fechaIngreso")));
                 alu.setCantMatAprob(rs.getInt("cantMatAprob"));
                 alu.setPromedio(rs.getDouble("promedio"));
+                alu.setActivo(rs.getString("estado")=="A"?true:false);
             }
             
         }
@@ -164,6 +168,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
             updatePS.setDate(index++, alu.getFechaIngreso().toSQLDate());
             updatePS.setInt(index++, alu.getCantMatAprob());
             updatePS.setDouble(index++, alu.getPromedio());
+            updatePS.setString(index++, alu.isActivo()?"A":"B");
             updatePS.setLong(index++, alu.getDni());
             updatePS.execute();
             
@@ -200,7 +205,20 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
         List<Alumno> alumnos = new ArrayList<>();
         Alumno alu;
         try {
-          
+            int index = 1;
+            if (activos==null) {
+                selectAllPS.setString(index++, "A");
+                selectAllPS.setString(index++, "B");
+            } 
+            else if (activos==true) {
+                selectAllPS.setString(index++,"A");
+                selectAllPS.setString(index++,"A");
+            } 
+            else {
+                selectAllPS.setString(index++,"B");
+                selectAllPS.setString(index++,"B");
+            }
+            
             ResultSet rs = selectAllPS.executeQuery();
             while(rs.next()) {
                 alu = new Alumno();
@@ -212,6 +230,7 @@ public class AlumnoDAOSQL extends DAO<Alumno, Long>{
                 alu.setFechaIngreso(new MiCalendario(rs.getDate("fechaIngreso")));
                 alu.setCantMatAprob(rs.getInt("cantMatAprob"));
                 alu.setPromedio(rs.getDouble("promedio"));
+                alu.setActivo(rs.getString("estado")=="A"?true:false);
                 alumnos.add(alu);
             }
             

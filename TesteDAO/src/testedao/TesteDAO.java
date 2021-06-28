@@ -59,13 +59,13 @@ public class TesteDAO {
          
             
             //CREATE
-            /* 
+            
             MiCalendario fechaNac = new MiCalendario(1, 12, 2001);
             MiCalendario fechaIng = new MiCalendario(1, 3, 2020);
             alumno = new Alumno(90909010, "Pablo", "Jose",'m', fechaNac, fechaIng, 3, 7.0);
             dao.create(alumno);
             System.out.println("Alumno creado ==>" + alumno);
-            */  
+            
             
             //READ
             /* 

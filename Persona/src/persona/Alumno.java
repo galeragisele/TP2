@@ -107,7 +107,8 @@ public class Alumno extends Persona{
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
-
+    
+    
 
     @Override
     public String toString() {
